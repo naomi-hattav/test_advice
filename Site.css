@@ -1,0 +1,26 @@
+﻿.wrap_header {
+    border-bottom: gray 3px solid;
+    border-top: gray 3px solid;
+}
+.header {
+background-color:aquamarine;
+}
+h1 {
+color:white;
+text-align:center;
+}
+.content{
+    direction:rtl;
+}
+#inDate {
+    padding-right: 107px;
+}
+.addressClient {
+    padding-left: 14px;
+}
+.phoneClient {
+    padding-left: 19px;
+}
+.tech{
+    padding-left:82px;
+}

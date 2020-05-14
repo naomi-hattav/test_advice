@@ -1,0 +1,101 @@
+﻿@Styles.Render("~/Content/Site.css")
+@{
+    ViewBag.Title = "קריאת שירות";
+}
+
+<div class="wrap_header">
+    <div class="header">
+        <h1 id="numCall"></h1>
+    </div>
+</div>
+<div class="content">
+        <p>
+            <span>
+                <label for="openCall">תאריך פתיחת קריאה</label>
+                <input id="openCall" type="text" disabled="disabled" />
+            </span>
+            <span>
+                <input id="techCheckbox" type="checkbox" />
+                <label for="techCheckbox">קבע שיבוץ לטכנאי</label>
+            </span>
+        </p>
+        <p>
+            <span>
+                <label for="tech" class="tech">טכנאי</label>
+                <select>
+                    <option>tech1</option>
+                    <option>tech2</option>
+                </select>
+            </span>
+            <span id="inDate" hidden>
+                <label>בתאריך</label>
+                <input id="techDate" type="date" />
+                <input id="timeFrom" type="text" />
+                <input id="timeTo" type="text" />
+            </span>
+        </p>
+</div>
+<div class="wrap_header">
+    <div class="header">
+        <h1>פרטי לקוח</h1>
+    </div>
+</div>
+<div class="content">
+    <div>
+        <p>
+            <label for="nameClient">שם לקוח</label>
+            <input id="nameClient" />
+        </p>
+        <p>
+            <label for="addressClient" class="addressClient">כתובת</label>
+            <input id="addressClient" />
+        </p>
+        <p>
+            <label for="phoneClient" class="phoneClient">טלפון</label>
+            <input id="phoneClient" />
+        </p>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+
+<script>
+
+    var nameClient;
+    var addressClient;
+    var phoneClient;
+    document.body.onload = () => {
+        if (window.XMLHttpRequest) {
+            myXml = new XMLHttpRequest();
+        }
+        else {
+            myXmll = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        myXml.open("GET", '../Models/XMLFile1.xml', false);
+        myXml.send();
+        xmlDoc = myXml.responseXML;
+        $("#numCall").text("שיבוץ לקריאה " + xmlDoc.documentElement.childNodes.item(1).childNodes.item(1).textContent);
+        $("#openCall").val(xmlDoc.documentElement.childNodes.item(1).childNodes.item(3).textContent);
+        var techSelected = xmlDoc.documentElement.childNodes.item(1).childNodes.item(5).textContent - 1;
+        $("option")[techSelected].selected = "selected";  
+        var date = xmlDoc.documentElement.childNodes.item(1).childNodes.item(7).textContent;
+        date = date.split("/").reverse().join("-");
+        $("#techDate").val(date);
+        $("#timeFrom").val(xmlDoc.documentElement.childNodes.item(1).childNodes.item(9).textContent);
+        $("#timeTo").val(xmlDoc.documentElement.childNodes.item(1).childNodes.item(11).textContent);
+        $("#nameClient").val(xmlDoc.documentElement.childNodes.item(1).childNodes.item(13).childNodes.item(1).textContent);
+        $("#addressClient").val(xmlDoc.documentElement.childNodes.item(1).childNodes.item(13).childNodes.item(3).textContent);
+        $("#phoneClient").val(xmlDoc.documentElement.childNodes.item(1).childNodes.item(13).childNodes.item(5).textContent);
+    }
+    $("#techCheckbox").click(function () {
+        setTimeout(function () {
+            if ($("#techCheckbox:checked").length > 0) {
+                $("#inDate").show();
+            }
+            else { 
+                $("#inDate").hide();
+            }
+        }, 50);
+    });
+</script>
